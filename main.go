@@ -28,7 +28,31 @@ func main(){
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
 
-func healthCheck(w http.ResponseWriter, r *http.Request){
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("API is healthy!"))
+func getUsers(w http.ResponseWriter, r *http.Request){
+	users := []User{
+		{ID: 1, Name: "John Doe", Email: "john@example.com"},
+		{ID: 2, Name: "Jane Smith", Email: "jane@example.com"},
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(users)
+}
+
+func createUser(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusCreated)
+	w.Write([]byte("User created"))
+}
+
+func getUser(w http.ResponseWriter, r *http.Request){
+	vars := mux.Vars(r)
+	userID := vars["id"]
+	w.Write([]byte("Getting user: " + userID))
+}
+
+func updateUser(w http.ResponseWriter, r *http.Request){
+	w.Write([]byte("User updated"))
+}
+
+func deleteUser(w http.ResponseWriter, r *http.Request){
+	w.Write([]byte("User deleted"))
 }
