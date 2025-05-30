@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  postgress:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: usermanagement
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password 
+    ports:
+      "-5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+api:
+  build: .
+  ports:
+    -"8080:8080"
+  depends_on:
+    - postgres
+  environment:
+    DB_CONNECTION: 'host=postgres user=postgres dbname=usermanagement sslmode=disable password=password'
+
+volums:
+  postgres_data
