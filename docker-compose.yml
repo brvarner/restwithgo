@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      "${DB_PORT}:5432"
+      - "${DB_PORT}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -17,14 +17,14 @@ services:
       timeout: 5s
       retries: 5
 
-api:
-  build: .
-  ports:
-    -"8080:8080"
-  depends_on:
-    - postgres
-  environment:
-    DB_CONNECTION: 'host=postgres user=postgres dbname=usermanagement sslmode=disable password=password'
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      - DB_CONNECTION=host=postgres user=${DB_USER} dbname=${DB_NAME} sslmode=disable password=${DB_PASSWORD}
 
-volums:
-  postgres_data
+volumes:
+  postgres_data:
