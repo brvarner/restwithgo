@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"log"
+	"os"
 
 	_ "github.com/lib/pq"
 )
@@ -12,7 +13,13 @@ var DB *sql.DB
 func InitDB() {
 	var err error
 
-	connStr := "user=postgres dbname=usermanagement sslmode=disable password=yourpassword"
+	connStr := "user=" + os.Getenv("DB_USER") +
+			" dbname=" + os.Getenv("DB_NAME") +
+			" sslmode=" + os.Getenv("DB_SSLMODE") +
+			" password=" + os.Getenv("DB_PASSWORD") +
+			" host=" + os.Getenv("DB_HOST") +
+			" port=" + os.Getenv("DB_PORT")
+
 
 	DB, err = sql.Open("postgres", connStr)
 	if err != nil {
